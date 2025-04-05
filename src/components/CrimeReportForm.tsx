@@ -6,7 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
+import { db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const CrimeReportForm = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const CrimeReportForm = () => {
     contact: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,23 +29,40 @@ const CrimeReportForm = () => {
     setFormData((prev) => ({ ...prev, type: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      toast("Report submitted", {
+    try {
+      // Submit crime report to Firebase
+      await addDoc(collection(db, "crimeReports"), {
+        ...formData,
+        timestamp: serverTimestamp(),
+        status: "submitted",
+      });
+
+      toast({
+        title: "Report submitted",
         description: "Your crime report has been submitted successfully.",
       });
-      setIsSubmitting(false);
+      
+      // Reset form data
       setFormData({
         type: "",
         location: "",
         description: "",
         contact: "",
       });
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      toast({
+        variant: "destructive",
+        title: "Submission failed",
+        description: "There was an error submitting your report. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

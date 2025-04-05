@@ -11,27 +11,42 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { toast } from "@/components/ui/sonner";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const SOSButton = () => {
   const [open, setOpen] = useState(false);
-  const { toast: uiToast } = useToast();
+  const { toast } = useToast();
   const emergencyNumber = "911"; // This could be configurable based on country
 
-  const handleEmergencyCall = () => {
+  const handleEmergencyCall = async () => {
     try {
       // Use the tel protocol to initiate a phone call
       window.location.href = `tel:${emergencyNumber}`;
       
+      // Log emergency call to Firebase
+      try {
+        await addDoc(collection(db, "emergencyCalls"), {
+          timestamp: serverTimestamp(),
+          phoneNumber: emergencyNumber,
+          status: "initiated",
+          userAgent: navigator.userAgent,
+          // User location can be added here if permission is granted
+        });
+      } catch (firebaseError) {
+        console.error("Failed to log emergency call to Firebase:", firebaseError);
+      }
+      
       // Show toast notification
-      toast("Calling emergency services", {
+      toast({
+        title: "Calling emergency services",
         description: `Dialing ${emergencyNumber}...`,
         duration: 5000,
       });
     } catch (error) {
       console.error("Failed to initiate emergency call:", error);
-      uiToast({
+      toast({
         variant: "destructive",
         title: "Call failed",
         description: "Unable to initiate the emergency call. Please dial manually.",

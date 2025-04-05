@@ -1,12 +1,33 @@
 
 import { Button } from "@/components/ui/button";
-import { BookOpen, MenuIcon, Shield } from "lucide-react";
+import { BookOpen, MenuIcon, Shield, LogIn } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
+import { auth } from "@/lib/firebase";
+import { signInAnonymously } from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const isMobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleAnonymousSignIn = async () => {
+    try {
+      await signInAnonymously(auth);
+      toast({
+        title: "Signed in",
+        description: "You are now signed in anonymously for emergency services.",
+      });
+    } catch (error) {
+      console.error("Error signing in:", error);
+      toast({
+        variant: "destructive",
+        title: "Sign in failed",
+        description: "Failed to sign in anonymously.",
+      });
+    }
+  };
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md">
@@ -42,6 +63,9 @@ const Header = () => {
                   <Button variant="ghost" className="justify-start">
                     Contact
                   </Button>
+                  <Button variant="ghost" className="justify-start" onClick={handleAnonymousSignIn}>
+                    <LogIn className="mr-2 h-4 w-4" /> Quick Sign-in
+                  </Button>
                 </nav>
               </div>
             )}
@@ -54,6 +78,9 @@ const Header = () => {
             <Button variant="ghost">Rights & Duties</Button>
             <Button variant="ghost">Resources</Button>
             <Button variant="ghost">Contact</Button>
+            <Button variant="outline" onClick={handleAnonymousSignIn}>
+              <LogIn className="mr-2 h-4 w-4" /> Quick Sign-in
+            </Button>
           </nav>
         )}
       </div>
