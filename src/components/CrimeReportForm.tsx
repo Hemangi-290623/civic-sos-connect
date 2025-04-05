@@ -78,7 +78,7 @@ const CrimeReportForm = () => {
           <div className="space-y-2">
             <Label htmlFor="type">Type of Incident</Label>
             <Select value={formData.type} onValueChange={handleSelectChange} required>
-              <SelectTrigger id="type">
+              <SelectTrigger id="type" className="w-full">
                 <SelectValue placeholder="Select incident type" />
               </SelectTrigger>
               <SelectContent>
@@ -99,6 +99,7 @@ const CrimeReportForm = () => {
               value={formData.location}
               onChange={handleChange}
               placeholder="Address or location description"
+              className="w-full"
               required
             />
           </div>
@@ -111,6 +112,7 @@ const CrimeReportForm = () => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Describe what happened in detail"
+              className="w-full"
               rows={4}
               required
             />
@@ -124,6 +126,7 @@ const CrimeReportForm = () => {
               value={formData.contact}
               onChange={handleChange}
               placeholder="Phone or email (optional)"
+              className="w-full"
             />
           </div>
           
