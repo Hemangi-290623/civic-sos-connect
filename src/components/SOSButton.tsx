@@ -18,7 +18,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 const SOSButton = () => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  const emergencyNumber = "100"; // Updated to use India's police emergency number
+  const emergencyNumber = "100"; // India's police emergency number
 
   const handleEmergencyCall = async () => {
     try {
@@ -58,10 +58,10 @@ const SOSButton = () => {
     <>
       <button 
         onClick={() => setOpen(true)}
-        className="sos-button sos-button-pulse w-14 h-14 md:w-16 md:h-16 flex items-center justify-center"
+        className="sos-button sos-button-pulse w-16 h-16 md:w-16 md:h-16 flex items-center justify-center"
         aria-label="Emergency SOS Button"
       >
-        <Phone className="h-6 w-6 md:h-8 md:w-8" />
+        <Phone className="h-7 w-7" />
       </button>
 
       <AlertDialog open={open} onOpenChange={setOpen}>

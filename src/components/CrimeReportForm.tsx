@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CrimeReportForm = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const CrimeReportForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -67,13 +69,13 @@ const CrimeReportForm = () => {
 
   return (
     <Card className="w-full max-w-lg mx-auto">
-      <CardHeader>
+      <CardHeader className={isMobile ? "px-3 py-4" : ""}>
         <CardTitle>Report a Crime</CardTitle>
         <CardDescription>
           Use this form for non-emergency situations. For emergencies, use the SOS button.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={isMobile ? "px-3 pb-4" : ""}>
         <form onSubmit={handleSubmit} className="crime-form">
           <div className="space-y-2">
             <Label htmlFor="type">Type of Incident</Label>
@@ -113,7 +115,7 @@ const CrimeReportForm = () => {
               onChange={handleChange}
               placeholder="Describe what happened in detail"
               className="w-full"
-              rows={4}
+              rows={isMobile ? 3 : 4}
               required
             />
           </div>
