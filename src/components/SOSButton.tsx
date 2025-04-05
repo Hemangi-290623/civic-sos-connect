@@ -18,7 +18,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 const SOSButton = () => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  const emergencyNumber = "911"; // This could be configurable based on country
+  const emergencyNumber = "100"; // Updated to use India's police emergency number
 
   const handleEmergencyCall = async () => {
     try {

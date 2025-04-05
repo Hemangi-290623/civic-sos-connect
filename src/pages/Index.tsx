@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import SOSButton from "@/components/SOSButton";
@@ -134,7 +133,7 @@ const Index = () => {
           <p>&copy; 2025 Civic SOS Connect. All rights reserved.</p>
           <p className="mt-2">
             For non-emergency assistance, please use the crime reporting form.
-            In case of emergency, use the SOS button or dial 911.
+            In case of emergency, use the SOS button or dial 100.
           </p>
         </div>
       </footer>
