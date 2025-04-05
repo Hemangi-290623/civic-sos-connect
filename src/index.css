@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,6 +50,9 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --emergency: 0 100% 50%;
+    --emergency-foreground: 0 0% 100%;
   }
 
   .dark {
@@ -87,6 +91,9 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --emergency: 0 100% 60%;
+    --emergency-foreground: 0 0% 100%;
   }
 }
 
@@ -98,4 +105,35 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.sos-button {
+  @apply fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-50 
+         bg-red-600 hover:bg-red-700 text-white font-bold 
+         rounded-full shadow-lg transition-all duration-200 
+         hover:scale-105 focus:outline-none focus:ring-4 
+         focus:ring-red-300 focus:ring-opacity-50;
+}
+
+.sos-button-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+.crime-form {
+  @apply space-y-4 p-6 bg-white rounded-lg shadow-md;
 }
